@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/10488c9c-9ac7-4024-ae32-c279e7784d3f)![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
-
 # 🚀 ANNADATA
 
 > "अन्नदाता, अब है आत्मनिर्भर!"
