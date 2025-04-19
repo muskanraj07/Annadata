@@ -1,17 +1,36 @@
 {
-    
-    "routes": [
-        { "src": "/static/(.*)", "dest": "/static/$1" },
-        { "src": "/(.*)", "dest": "your_project_name/wsgi.py" }
-    ]
-    "builds": [
-        {
-            "src": "annandata/wsgi.py",
-            "use": "@vercel/python",
-            "config": {
-                "installCommand": "pip install -r requirements.txt",
-                "buildCommand": "python manage.py migrate && python manage.py collectstatic --noinput"
+  "build": {
+    "env": {
+      "PYTHON_VERSION": "3.9",
+      "DJANGO_SETTINGS_MODULE": "annandata.settings"
     }
-  }
-]
+  },
+  "functions": {
+    "api//*.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "builds": [
+    {
+      "src": "annandata/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.9",
+        "wsgi": "your_project_name.wsgi:application",
+        "installCommand": "pip install -r requirements.txt",
+        "buildCommand": "python manage.py migrate && python manage.py collectstatic --noinput"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "annandata/wsgi.py"
+    }
+  ]
 }
