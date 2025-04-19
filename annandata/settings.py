@@ -26,7 +26,7 @@ OPENAI_API_KEY = "sk-proj-Pe-jMahghBQWRd72ZA8YiSkuR0cZGM9VasMV30u6qcJmQt0T46Q1dE
 SECRET_KEY = 'django-insecure-q@n0$m*w-t9s)ytaehwwp#=a)al^q#efoi+0xlbwbt^86hdfix'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app']
 
