@@ -119,20 +119,14 @@ USE_TZ = True
 
 # For production (during development, Django serves static files automatically)
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+
+# For production (during development, Django serves static files automatically)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional directories for static files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'myapp/static'),
-]
-
-# WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Add to MIDDLEWARE (should be near top but after SecurityMiddleware)
-MIDDLEWARE = [
-    # ...
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    # ...
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type
