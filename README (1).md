@@ -69,8 +69,8 @@ Highlight the most important features of your project:
 ![image](https://github.com/user-attachments/assets/97927526-0c32-411a-85cf-9c500e485352)
 
 ## 📽️ Demo & Deliverables
-- **Demo Video Link:** 
-- ** PPT Link:** [Paste Google Slides / PDF link here]  
+- **Demo Video Link:**  https://www.loom.com/share/a524e9cfd7ff452ea720d00adfea3a31?sid=e442f2db-9164-403e-a260-bba79a629aaf
+- ** PPT Link:** : https://www.canva.com/design/DAGlDaY-Yp0/VVCYI_e75q7anlM4Tdlm4w/view?utm_content=DAGlDaY-Yp0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h208f74dd4d
 
 ## ✅ Tasks & Bonus Checklist
 
