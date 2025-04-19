@@ -1,0 +1,1337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annadata - Advanced Agri Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #38A169, #2F855A);
+            --secondary-gradient: linear-gradient(135deg, #48BB78, #2F855A);
+            --accent-color: #C6F6D5;
+            --dark-green: #22543D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--dark-green);
+            min-height: 100vh;
+            color: white;
+            transition: background 0.5s ease;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 3rem;
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links li {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links li::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links li:hover::after {
+            width: 100%;
+        }
+
+        .content-section {
+             display: none;
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            animation: sectionEntrance 0.6s ease;
+
+        }
+
+        @keyframes sectionEntrance {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active {
+            display: block;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .contact-form button {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            z-index: 1000;
+        }
+
+        .social-icon {
+            font-size: 1.8rem;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.15);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+        }
+
+        .auth-container {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 25px;
+            width: 500px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-tab {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--dark-green);
+            font-weight: 600;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--dark-green);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-input:focus {
+            border-color: var(--dark-green);
+            box-shadow: 0 0 0 3px rgba(34, 84, 61, 0.1);
+            outline: none;
+        }
+
+        .auth-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .auth-checkbox {
+            accent-color: var(--dark-green);
+        }
+
+        .auth-link {
+            color: var(--dark-green);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--secondary-gradient);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            background: var(--dark-green);
+            transition: width 0.3s ease;
+        }
+
+        /* About Section Styling */
+        #about {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8fcf9 0%, #e9f7ec 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #about .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        #about h2 {
+            font-size: 3.2rem;
+            color: #1a2f38;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        #about h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #27ae60;
+            border-radius: 2px;
+        }
+        
+        #about p {
+            font-size: 1.2rem;
+            color: #5a6f7a;
+            max-width: 800px;
+            margin: 2rem auto 4rem;
+            line-height: 1.6;
+            animation: fadeIn 0.8s ease 0.2s backwards;
+        }
+        
+        #about .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            padding: 0 2rem;
+        }
+        
+        #about .feature-card {
+            background: #ffffff;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #about .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        #about .feature-card i {
+            font-size: 3.5rem;
+            color: #27ae60;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        #about .feature-card:hover i {
+            transform: scale(1.15) rotate(-5deg);
+            color: #219a52;
+        }
+        
+        #about .feature-card h3 {
+            font-size: 1.5rem;
+            color: #1a2f38;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        #about .feature-card p {
+            font-size: 1rem;
+            color: #5a6f7a;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Animated Background Elements */
+        #about::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background: rgba(39, 174, 96, 0.05);
+            border-radius: 50%;
+            animation: pulse 8s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0.4; }
+            100% { transform: scale(0.8); opacity: 0.8; }
+        }
+        
+        /* Services Section Styling */
+        #services {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8fff9 0%, #e6f7ec 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #services .section-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        #services h2 {
+            font-size: 3.2rem;
+            color: #1a2f38;
+            margin-bottom: 4rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        #services h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #27ae60;
+            border-radius: 2px;
+        }
+        
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            padding: 0 2rem;
+        }
+        
+        .service-item {
+            background: #ffffff;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .service-item i {
+            font-size: 3.5rem;
+            color: #27ae60;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .service-item:hover i {
+            transform: scale(1.15) rotate(-5deg);
+            color: #219a52;
+        }
+        
+        .service-item h3 {
+            font-size: 1.5rem;
+            color: #1a2f38;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .service-item button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .service-item button::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .service-item button:hover {
+            background: #219a52;
+            padding-right: 3.5rem;
+        }
+        
+        .service-item button:hover::after {
+            right: 20px;
+            opacity: 1;
+        }
+        
+        /* Animated Background Element */
+        #services::before {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 250px;
+            height: 250px;
+            background: rgba(39, 174, 96, 0.05);
+            border-radius: 50%;
+            animation: pulse 8s infinite;
+        }
+        
+        /* Contact Section Styling */
+        #contact {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f4fbf6 0%, #e6f5eb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #contact .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #contact h2 {
+            font-size: 3.2rem;
+            color: #1a2f38;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        #contact h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #27ae60;
+            border-radius: 2px;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        
+        .contact-info {
+            background: #ffffff;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            color: #1a2f38;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .contact-info i {
+            width: 48px;
+            height: 48px;
+            background: #e6f5eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: #27ae60;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info p:hover i {
+            background: #27ae60;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 12px rgba(39, 174, 96, 0.2);
+            outline: none;
+        }
+        
+        .contact-form button {
+            background: #27ae60;
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-form button::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .contact-form button:hover {
+            background: #219a52;
+            padding-right: 4rem;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .contact-form button:hover::after {
+            right: 20px;
+            opacity: 1;
+        }
+        
+        /* Capture Section Styling */
+        #capture {
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+        }
+
+        .capture-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .capture-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .capture-header h1 {
+            color: var(--dark-green);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .upload-section {
+            border: 3px dashed var(--accent-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(198, 246, 213, 0.1);
+        }
+
+        .upload-section:hover {
+            background: rgba(198, 246, 213, 0.2);
+            transform: scale(1.02);
+        }
+
+        .upload-section.dragover {
+            border-color: var(--dark-green);
+            background: rgba(198, 246, 213, 0.3);
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            display: none;
+            margin: 20px auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .camera-section {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        #cameraFeed {
+            width: 100%;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-capture {
+            background: var(--dark-green);
+            color: white;
+        }
+
+        .btn-capture:hover {
+            background: #1a4731;
+            transform: scale(1.05);
+        }
+
+        .btn-upload {
+            background: var(--accent-color);
+            color: var(--dark-green);
+        }
+
+        .btn-upload:hover {
+            background: #b2e9c1;
+            transform: scale(1.05);
+        }
+
+        .analysis-results {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(198, 246, 213, 0.2);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--dark-green);
+            transition: width 0.3s ease;
+        }
+
+        .description-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(198, 246, 213, 0.2);
+            border-radius: 10px;
+        }
+
+        .description-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .description-form input[type="file"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .description-form button[type="submit"] {
+            background: var(--dark-green);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .description-form button[type="submit"]:hover {
+            background-color: #1a4731;
+        }
+
+        .description-form .error-message {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .description-form h2 {
+            color: var(--accent-color);
+            margin-top: 20px;
+        }
+
+        .description-form p {
+            line-height: 1.6;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-container {
+                width: 90%;
+                padding: 2rem;
+            }
+
+            .capture-container {
+                padding: 20px;
+            }
+
+            .capture-header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }         
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" class="logo">
+            <img src="{% static 'img.png' %}" height="55px" width="55px" alt="Annadata Logo" class="logo-img" style="border-radius: 8px;"></img>
+            Annadata
+        </a>
+        <ul class="nav-links">
+            <li onclick="showSection('home')">Home</li>
+            <li onclick="showSection('about')">About</li>
+            <li onclick="showSection('services')">Services</li>
+            <li onclick="showSection('contact')">Contact</li>
+            <li onclick="showAuthModal('login')">Login</li>
+        </ul>
+    </nav>
+
+    <!-- Content Sections -->
+    <section id="home" class="content-section active">
+        <div class="section-content">
+            <h1>🌟 Welcome to Annadata – Your Digital Kisan Saathi! 🌾</h1>
+            <p>"अन्नदाता, अब है आत्मनिर्भर !"</p>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>"खेती की हर मुश्किल का हल, अब आपके मोबाइल में!"</h3>
+                    <p>अन्नदाता – जहां समस्याएं मिलती हैं झटपट समाधान! 🌱</p>
+                    <p>"आत्मनिर्भर किसान, समृद्ध भारत" – हमारी प्रतिज्ञा!</p>
+                    <p>💡 क्यों इंतज़ार करें?</p>
+                    <p>अभी ज्वाइन करें और बनें #आत्मनिर्भरअन्नदाता!</p>
+                    <p>साथ चलें, सफलता की फसल काटें! 🚜✨</p>
+                </div>
+        </div>
+        <div id="bgimg"> <a href="#">
+            <img src="{% static 'img4.jpg' %}" height="500px" width="1040px" style="border-radius: 10px;"></img>
+        </a>  
+        </div>
+    </section>
+
+    <section id="about" class="content-section">
+        <div class="section-content">
+            <h2>About Us</h2>
+            <p>Annadata is a revolutionary agricultural platform connecting farmers with modern technology to enhance productivity and profitability.</p>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>10+ Years Experience</h3>
+                    <p>Serving the agricultural community since 2013</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>500K+ Farmers</h3>
+                    <p>Trusted by farming communities across India</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Pan-India Presence</h3>
+                    <p>Serving farmers in 12+ states</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="content-section">
+        <div class="section-content">
+            <h2>Our Services</h2>
+            <div class="service-list">
+                <div class="service-item">
+                    <i class="fas fa-cloud-sun-rain"></i>
+                    <h3>ASK ANNADATA</h3>
+                    <a href="{% url 'chatbot' %}">
+                        <button>Get Smart Answers →</button>
+                    </a>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-seedling"></i>
+                    <h3>CAPTURE WITH ANNADATA</h3>
+                    <a href="{% url 'describe-image' %}">
+                    <button onclick="showSection('capture')">Scan & Analyze →</button>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>RECORD WITH ANNADATA</h3>
+                    <a href="{% url 'audio_analysis' %}">
+                        <button>Start Recording →</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="capture" class="content-section">
+        <div class="capture-container">
+            <div class="capture-header">
+                <h1>🌾 Capture & Describe with Annadata 🌱</h1>
+                <p>Agricultural Image Analysis & Description Platform</p>
+            </div>
+
+            <div class="upload-section" id="dropZone">
+                <i class="fas fa-camera fa-3x" style="color: var(--dark-green); margin-bottom: 15px;"></i>
+                <p>Drag & Drop or Click to Upload Field Image for Description</p>
+                <input type="file" name="image_upload" id="imageInput" accept="image/*" hidden>
+                <div class="button-group">
+                    <button class="btn btn-upload" onclick="document.getElementById('imageInput').click()">
+                        <i class="fas fa-upload"></i>
+                        Upload Image
+                    </button>
+                    <button class="btn btn-capture" id="startCamera">
+                        <i class="fas fa-camera-retro"></i>
+                        Open Camera
+                    </button>
+                </div>
+            </div>
+
+            <div class="camera-section">
+                <video id="cameraFeed"></video>
+                <button class="btn btn-capture" id="captureBtn" style="display: none;">
+                    <i class="fas fa-camera"></i>
+                    Capture Image
+                </button>
+            </div>
+
+            <img id="imagePreview" alt="Preview" style="display: none;">
+
+            {% comment %} <form class="description-form" id="descriptionForm">
+                <label for="formImageUpload">Uploaded Image:</label><br>
+                <input type="file" name="image_upload" id="formImageUpload" accept="image/*" style="display: none;" required><br><br>
+                <button type="submit" class="btn btn-capture" id="submitDescriptionBtn" style="display: none; width: 100%;">Get Description</button>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <div id="analysisResults" class="analysis-results">
+                    <h2>Image Description:</h2>
+                    <p id="descriptionText"></p>
+                </div>
+            </form> {% endcomment %}
+        </div>
+    </section>
+
+    <section id="contact" class="content-section">
+        <div class="section-content">
+            <h2>Contact Us</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i>+91 12345 67890</p>
+                    <p><i class="fas fa-envelope"></i>support@annandata.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i>New Delhi, India</p>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit">Send Message →</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="authModal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuth('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuth('register')">Register</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="auth-input" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="auth-input" placeholder="Password" required>
+                </div>
+                <div class="auth-options">
+                    <label>
+                        <input type="checkbox" class="auth-checkbox"> Remember me
+                    </label>
+                    <a href="#" class="auth-link">Forgot Password?</a>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="auth-input" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="auth-input" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="auth-input" placeholder="Password" required onkeyup="checkPasswordStrength(this.value)">
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="auth-input" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Create Account</button>
+                <p style="text-align: center; margin-top: 1.5rem;">
+                    Already have an account? <a href="#" class="auth-link" onclick="switchAuth('login')">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const section = document.getElementById(sectionId);
+            if(section) section.classList.add('active');
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+        });
+
+        function showAuthModal(type) {
+            document.getElementById('authModal').style.display = 'block';
+            switchAuth(type);
+        }
+
+        function switchAuth(type) {
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(type + 'Form').classList.add('active');
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('strengthBar');
+            const strength = Math.min(password.length / 12 * 100, 100);
+            strengthBar.style.width = strength + '%';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('authModal')) {
+                document.getElementById('authModal').style.display = 'none';
+            }
+        }
+
+        document.querySelectorAll('.auth-form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Form submitted successfully!');
+                document.getElementById('authModal').style.display = 'none';
+            });
+        });
+
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message sent successfully!');
+            e.target.reset();
+        });
+
+        // Capture functionality
+        const dropZone = document.getElementById('dropZone');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const startCamera = document.getElementById('startCamera');
+        const cameraFeed = document.getElementById('cameraFeed');
+        const captureBtn = document.getElementById('captureBtn');
+        const descriptionForm = document.getElementById('descriptionForm');
+        const formImageUpload = document.getElementById('formImageUpload');
+        const submitDescriptionBtn = document.getElementById('submitDescriptionBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const analysisResults = document.getElementById('analysisResults');
+        const descriptionText = document.getElementById('descriptionText');
+
+        // File Upload Handling
+        dropZone.addEventListener('click', () => imageInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleImage(file);
+        });
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            handleImage(file);
+        });
+
+        // Camera Handling
+        startCamera.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraFeed.srcObject = stream;
+                cameraFeed.style.display = 'block';
+                captureBtn.style.display = 'block';
+                startCamera.style.display = 'none';
+            } catch (error) {
+                errorMessage.textContent = 'Error accessing camera: ' + error.message;
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        captureBtn.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            canvas.getContext('2d').drawImage(cameraFeed, 0, 0);
+
+            canvas.toBlob((blob) => {
+                handleImage(blob);
+                cameraFeed.srcObject.getTracks().forEach(track => track.stop());
+                cameraFeed.style.display = 'none';
+                captureBtn.style.display = 'none';
+                startCamera.style.display = 'block';
+            }, 'image/jpeg');
+        });
+
+        function handleImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                // Set the uploaded image as the value for the form's file input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                formImageUpload.files = dataTransfer.files;
+                submitDescriptionBtn.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        descriptionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simulate analysis process
+            submitDescriptionBtn.disabled = true;
+            submitDescriptionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // This would be replaced with actual API call in production
+                const sampleDescriptions = [
+                    "The image shows healthy wheat crops with no visible signs of disease or pest infestation.",
+                    "The soil appears to have adequate moisture content, suitable for the current growth stage.",
+                    "Minor weed presence detected in the periphery of the field that may require attention.",
+                    "The crop shows signs of nutrient deficiency, consider soil testing and appropriate fertilization."
+                ];
+                
+                const randomDescription = sampleDescriptions[Math.floor(Math.random() * sampleDescriptions.length)];
+                
+                descriptionText.textContent = randomDescription;
+                analysisResults.style.display = 'block';
+                submitDescriptionBtn.disabled = false;
+                submitDescriptionBtn.innerHTML = 'Get Description';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture & Describe with Annadata 🌾</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c5f2d;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .upload-section {
+            border: 3px dashed #97bc62;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: #f8fff0;
+        }
+
+        .upload-section:hover {
+            background: #f0ffe0;
+            transform: scale(1.02);
+        }
+
+        .upload-section.dragover {
+            border-color: #2c5f2d;
+            background: #e8ffd0;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            display: none;
+            margin: 20px auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .camera-section {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        #cameraFeed {
+            width: 100%;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-capture {
+            background: #2c5f2d;
+            color: white;
+        }
+
+        .btn-capture:hover {
+            background: #214f21;
+            transform: scale(1.05);
+        }
+
+        .btn-upload {
+            background: #97bc62;
+            color: #2d3748;
+        }
+
+        .btn-upload:hover {
+            background: #85a854;
+            transform: scale(1.05);
+        }
+
+        .analysis-results {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fff0;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #2c5f2d;
+            transition: width 0.3s ease;
+        }
+
+        .description-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fff0;
+            border-radius: 10px;
+        }
+
+        .description-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .description-form input[type="file"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .description-form button[type="submit"] {
+            background: #2c5f2d;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .description-form button[type="submit"]:hover {
+            background-color: #214f21;
+        }
+
+        .description-form .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .description-form h2 {
+            color: #2c5f2d;
+            margin-top: 20px;
+        }
+
+        .description-form p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Capture & Describe with Annadata 🌱</h1>
+            <p>Agricultural Image Analysis & Description Platform</p>
+        </div>
+
+        <div class="upload-section" id="dropZone">
+            <i class="fas fa-camera fa-3x" style="color: #97bc62; margin-bottom: 15px;"></i>
+            <p>Drag & Drop or Click to Upload Field Image for Description</p>
+            <input type="file" name="image_upload" id="imageInput" accept="image/*" hidden>
+            <div class="button-group">
+                <button class="btn btn-upload" onclick="document.getElementById('imageInput').click()">
+                    <i class="fas fa-upload"></i>
+                    Upload Image
+                </button>
+                <button class="btn btn-capture" id="startCamera">
+                    <i class="fas fa-camera-retro"></i>
+                    Open Camera
+                </button>
+            </div>
+        </div>
+
+        <div class="camera-section">
+            <video id="cameraFeed"></video>
+            <button class="btn btn-capture" id="captureBtn" style="display: none;">
+                <i class="fas fa-camera"></i>
+                Capture Image
+            </button>
+        </div>
+
+        <img id="imagePreview" alt="Preview" style="display: none;">
+
+        <form method="post" enctype="multipart/form-data" class="description-form" id="descriptionForm">
+            {% csrf_token %}
+            <label for="image_upload">Uploaded Image:</label><br>
+            <input type="file" name="image_upload" id="formImageUpload" accept="image/*" style="display: none;" required><br><br>
+            <button type="submit" style="display: none;" id="submitDescriptionBtn">Get Description</button>
+
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+
+            {% if description %}
+                <h2>Image Description:</h2>
+                <p>{{ description }}</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const startCamera = document.getElementById('startCamera');
+        const cameraFeed = document.getElementById('cameraFeed');
+        const captureBtn = document.getElementById('captureBtn');
+        const descriptionForm = document.getElementById('descriptionForm');
+        const formImageUpload = document.getElementById('formImageUpload');
+        const submitDescriptionBtn = document.getElementById('submitDescriptionBtn');
+
+        // File Upload Handling
+        dropZone.addEventListener('click', () => imageInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleImage(file);
+        });
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            handleImage(file);
+        });
+
+        // Camera Handling
+        startCamera.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraFeed.srcObject = stream;
+                cameraFeed.style.display = 'block';
+                captureBtn.style.display = 'block';
+                startCamera.style.display = 'none';
+                dropZone.style.display = 'none'; // Hide upload section when camera is open
+                imagePreview.style.display = 'none'; // Hide preview
+            } catch (error) {
+                alert('Error accessing camera: ' + error.message);
+            }
+        });
+
+        captureBtn.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            canvas.getContext('2d').drawImage(cameraFeed, 0, 0);
+
+            canvas.toBlob((blob) => {
+                handleImage(blob);
+                cameraFeed.srcObject.getTracks().forEach(track => track.stop());
+                cameraFeed.style.display = 'none';
+                captureBtn.style.display = 'none';
+                startCamera.style.display = 'block';
+                dropZone.style.display = 'block'; // Show upload section again
+            }, 'image/jpeg');
+        });
+
+        function handleImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                // Set the uploaded image as the value for the form's file input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                formImageUpload.files = dataTransfer.files;
+                submitDescriptionBtn.style.display = 'block'; // Show the submit button
+            }
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
