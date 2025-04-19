@@ -68,7 +68,6 @@ Highlight the most important features of your project:
 ✅Audio → Bridges literacy gaps.
 ✅Image → Turns smartphones into microscopes.
 
-Add images, GIFs, or screenshots if helpful!
 ![image](https://github.com/user-attachments/assets/97927526-0c32-411a-85cf-9c500e485352)
 
 ## 📽️ Demo & Deliverables
