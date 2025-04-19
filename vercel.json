@@ -1,32 +1,24 @@
 {
-  "build": {
-    "env": {
-      "PYTHON_VERSION": "3.9",
-      "DJANGO_SETTINGS_MODULE": "annandata.settings"
-    }
-  },
-  "functions": {
-    "api//*.py": {
-      "runtime": "python3.9"
-    }
-  },
+  "version": 2,
   "builds": [
     {
       "src": "annandata/wsgi.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "15mb",
         "runtime": "python3.9",
-        "wsgi": "your_project_name.wsgi:application",
-        "installCommand": "pip install -r requirements.txt",
-        "buildCommand": "python manage.py migrate && python manage.py collectstatic --noinput"
+        "wsgi": "annandata.wsgi:application",
+        "installCommand": "pip install -r requirements.txt && pip install whitenoise",
+        "buildCommand": "python manage.py collectstatic --noinput"
       }
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "src": "/static/myapp/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/static/myapp/$1"
     },
     {
       "src": "/(.*)",
