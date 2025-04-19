@@ -29,8 +29,6 @@ Impact:
 
 By bridging the gap between agriculture and technology, ANNADATA turns raw data into "harvest-to-table" resilience. 🌱📊
 
-## 🧠 Team & Approach
-
 ### Team Name:  
 MakeItHappen
 
@@ -57,7 +55,7 @@ Solutions:
 - Backend: Django
 - Database: MongoDB
 - APIs: Groq and Open AI 
-- Hosting: Vercel
+- Hosting: Render [ link : https://annadata-giha.onrender.com ]
 
 ### Sponsor Technologies Used : 
 - [✅] **Groq:** : We used it for creating a multimodal { processes text, image and audio} application.
@@ -76,9 +74,8 @@ Highlight the most important features of your project:
 
 ## ✅ Tasks & Bonus Checklist
 
-- [ ] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
-- [ ] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
-- [ ] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)**  (Details in Participant Manual)
+- [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
+- [ ✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
 
 ## 🧪 How to Run the Project
 
