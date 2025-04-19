@@ -1,28 +1,13 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "annandata/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.9",
-        "wsgi": "annandata.wsgi:application",
-        "installCommand": "pip install -r requirements.txt && pip install whitenoise",
-        "buildCommand": "python manage.py collectstatic --noinput"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/static/myapp/(.*)",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/static/myapp/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "annandata/wsgi.py"
-    }
-  ]
+    "builds": [{
+        "src": "annandata/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "annandata/wsgi.py"
+        }
+    ]
 }
