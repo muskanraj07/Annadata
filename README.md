@@ -55,7 +55,7 @@ Solutions:
 - Backend: Django
 - Database: MongoDB
 - APIs: Groq and Open AI 
-- Hosting: Render [ link : https://annadata-giha.onrender.com ]
+- Hosting: Vercel [ link : https://annadata-mu.vercel.app/ ]
 
 ### Sponsor Technologies Used : 
 - [✅] **Groq:** : We used it for creating a multimodal { processes text, image and audio} application.
